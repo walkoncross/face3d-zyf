@@ -5,7 +5,7 @@ Generate 2d uv maps representing different attributes(colors, depth, image posit
 import os, sys
 import numpy as np
 import scipy.io as sio
-from skimage import io
+from skimage import io, img_as_ubyte
 import skimage.transform
 from time import time
 import matplotlib.pyplot as plt
@@ -47,7 +47,7 @@ uv_coords = process_uv(uv_coords, uv_h, uv_w)
 #-- 1. uv texture map
 attribute = colors
 uv_texture_map = mesh.render.render_colors(uv_coords, triangles, attribute, uv_h, uv_w, c=3)
-io.imsave('{}/uv_texture_map.jpg'.format(save_folder), np.squeeze(uv_texture_map))
+io.imsave('{}/uv_texture_map.jpg'.format(save_folder), img_as_ubyte(np.squeeze(uv_texture_map)))
 
 #-- 2. uv position map in 'Joint 3D Face Reconstruction and Dense Alignment with Position Map Regression Network'
 #--   for face reconstruction & alginment(dense correspondences)
@@ -62,9 +62,9 @@ attribute = position
 # corresponding 2d facial image
 image = mesh.render.render_colors(image_vertices, triangles, colors, image_h, image_w, c=3)
 uv_position_map = mesh.render.render_colors(uv_coords, triangles, attribute, uv_h, uv_w, c=3)
-io.imsave('{}/image.jpg'.format(save_folder), np.squeeze(image))
+io.imsave('{}/image.jpg'.format(save_folder), img_as_ubyte(np.squeeze(image)))
 np.save('{}/uv_position_map.npy'.format(save_folder), uv_position_map)
-io.imsave('{}/uv_position_map.jpg'.format(save_folder), (uv_position_map)/max(image_h, image_w)) # only for show
+io.imsave('{}/uv_position_map.jpg'.format(save_folder), img_as_ubyte((uv_position_map)/max(image_h, image_w))) # only for show
 
 # - verify
 # import cv2
