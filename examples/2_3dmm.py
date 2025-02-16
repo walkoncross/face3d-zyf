@@ -6,7 +6,7 @@ import os, sys
 import subprocess
 import numpy as np
 import scipy.io as sio
-from skimage import io
+from skimage import io, img_as_ubyte
 from time import time
 import matplotlib.pyplot as plt
 
@@ -66,8 +66,8 @@ save_folder = 'results/3dmm'
 if not os.path.exists(save_folder):
     os.mkdir(save_folder)
 
-io.imsave('{}/generated.jpg'.format(save_folder), image)
-io.imsave('{}/fitted.jpg'.format(save_folder), fitted_image)
+io.imsave('{}/generated.jpg'.format(save_folder), img_as_ubyte(image))
+io.imsave('{}/fitted.jpg'.format(save_folder), img_as_ubyte(fitted_image))
 
 
 ### ----------------- visualize fitting process
@@ -81,7 +81,7 @@ for i in range(fitted_sp.shape[0]):
 
 	image_vertices = mesh.transform.to_image(transformed_vertices, h, w)
 	fitted_image = mesh.render.render_colors(image_vertices, bfm.triangles, colors, h, w)
-	io.imsave('{}/show_{:0>2d}.jpg'.format(save_folder, i), fitted_image)
+	io.imsave('{}/show_{:0>2d}.jpg'.format(save_folder, i), img_as_ubyte(fitted_image))
 
 options = '-delay 20 -loop 0 -layers optimize' # gif. need ImageMagick.
 subprocess.call('convert {} {}/show_*.jpg {}'.format(options, save_folder, save_folder + '/3dmm.gif'), shell=True)
