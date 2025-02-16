@@ -4,7 +4,7 @@ Generate uv position map of 300W_LP.
 import os, sys
 import numpy as np
 import scipy.io as sio
-from skimage import io
+from skimage import io, img_as_ubyte
 import skimage.transform
 from time import time
 import matplotlib.pyplot as plt
@@ -78,14 +78,14 @@ def run_posmap_300W_LP(bfm, image_path, mat_path, save_folder,  uv_h = 256, uv_w
     uv_position_map = mesh.render.render_colors(uv_coords, bfm.full_triangles, position, uv_h, uv_w, c = 3)
 
     # 5. save files
-    io.imsave('{}/{}'.format(save_folder, image_name), np.squeeze(cropped_image))
+    io.imsave('{}/{}'.format(save_folder, image_name), img_as_ubyte(np.squeeze(cropped_image)))
     np.save('{}/{}'.format(save_folder, image_name.replace('jpg', 'npy')), uv_position_map)
-    io.imsave('{}/{}'.format(save_folder, image_name.replace('.jpg', '_posmap.jpg')), (uv_position_map)/max(image_h, image_w)) # only for show
+    io.imsave('{}/{}'.format(save_folder, image_name.replace('.jpg', '_posmap.jpg')), img_as_ubyte((uv_position_map)/max(image_h, image_w))) # only for show
 
     # --verify
     # import cv2
     # uv_texture_map_rec = cv2.remap(cropped_image, uv_position_map[:,:,:2].astype(np.float32), None, interpolation=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT,borderValue=(0))
-    # io.imsave('{}/{}'.format(save_folder, image_name.replace('.jpg', '_tex.jpg')), np.squeeze(uv_texture_map_rec))
+    # io.imsave('{}/{}'.format(save_folder, image_name.replace('.jpg', '_tex.jpg')), img_as_ubyte(np.squeeze(uv_texture_map_rec)))
 
 
 if __name__ == '__main__':
