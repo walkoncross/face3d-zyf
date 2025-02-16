@@ -95,8 +95,14 @@ def load_pncc_code(path = 'pncc_code.mat'):
     Returns:  
         pncc_code: [nver, 3]
     '''
-    C = sio.loadmat(path)
-    pncc_code = C['vertex_code'].T
+    if path.endswith("mat"):
+        C = sio.loadmat(path)
+        pncc_code = C["vertex_code"].T
+    elif path.endswith("npy"):
+        pncc_code = np.load(path).T
+    else:
+        raise ValueError("Unsupported file type, must be .mat or .npy")
+
     return pncc_code
 
 ## 
