@@ -5,7 +5,7 @@
 import os, sys
 import numpy as np
 import scipy.io as sio
-from skimage import io
+from skimage import io, img_as_ubyte
 from time import time
 import matplotlib.pyplot as plt
 
@@ -59,8 +59,8 @@ image_vertices = mesh.transform.to_image(projected_vertices, h, w)
 rendering = mesh.render.render_colors(image_vertices, triangles, lit_colors, h, w)
 
 # convert to uint8, to avoid error in io.imsave()
-rendering = rendering * 255.0
-rendering = rendering.astype(np.uint8)
+# rendering = rendering * 255.0
+# rendering = rendering.astype(np.uint8)
 
 # ---- show rendering
 # plt.imshow(rendering)
@@ -68,7 +68,7 @@ rendering = rendering.astype(np.uint8)
 save_folder = "results/pipeline"
 if not os.path.exists(save_folder):
     os.mkdir(save_folder)
-io.imsave("{}/rendering.jpg".format(save_folder), rendering)
+io.imsave("{}/rendering.jpg".format(save_folder), img_as_ubyte(rendering))
 
 # ---- show mesh
 # mesh.vis.plot_mesh(camera_vertices, triangles)
