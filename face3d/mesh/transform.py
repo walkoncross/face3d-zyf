@@ -139,11 +139,24 @@ def lookat_camera(vertices, eye, at = None, up = None):
 
     eye = np.array(eye).astype(np.float32)
     at = np.array(at).astype(np.float32)
-    z_aixs = -normalize(at - eye) # look forward
-    x_aixs = normalize(np.cross(up, z_aixs)) # look right
-    y_axis = np.cross(z_aixs, x_aixs) # look up
 
-    R = np.stack((x_aixs, y_axis, z_aixs))#, axis = 0) # 3 x 3
+    # print(f"--> eye: {eye}")
+    # print(f"--> at: {at}")
+    # print(f"--> up: {up}")
+
+    # reference: 
+    #   “Standard” Camera Space on page 63 of https://cs184.eecs.berkeley.edu/sp25/assets/lectures/04-transforms.pdf
+    # and a more clear explanation on: 
+    #   https://www.scratchapixel.com/lessons/mathematics-physics-for-computer-graphics/lookat-function/framing-lookat-function.html
+    z_axis = -normalize(at - eye) # look forward
+    x_axis = normalize(np.cross(up, z_axis)) # look right
+    y_axis = np.cross(z_axis, x_axis) # look up
+
+    # print(f"--> x_axis: {x_axis}")
+    # print(f"--> y_axis: {y_axis}")
+    # print(f"--> z_axis: {z_axis}")
+
+    R = np.stack((x_axis, y_axis, z_axis))#, axis = 0) # 3 x 3
     transformed_vertices = vertices - eye # translation
     transformed_vertices = transformed_vertices.dot(R.T) # rotation
     return transformed_vertices
