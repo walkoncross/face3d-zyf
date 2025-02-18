@@ -81,7 +81,7 @@ def estimate_shape(x, shapeMU, shapePC, shapeEV, expression, s, R, t2d, lamb = 3
     A = s*P.dot(R)
 
     # --- calc pc
-    pc_3d = np.resize(shapePC.T, [dof, n, 3]) # 199 x n x 3
+    pc_3d = np.reshape(shapePC.T, [dof, n, 3]) # 199 x n x 3
     pc_3d = np.reshape(pc_3d, [dof*n, 3]) 
     pc_2d = pc_3d.dot(A.T.copy()) # 199 x n x 2
     
@@ -89,7 +89,7 @@ def estimate_shape(x, shapeMU, shapePC, shapeEV, expression, s, R, t2d, lamb = 3
 
     # --- calc b
     # shapeMU
-    mu_3d = np.resize(shapeMU, [n, 3]).T # 3 x n
+    mu_3d = np.reshape(shapeMU, [n, 3]).T # 3 x n
     # expression
     exp_3d = expression
     # 
@@ -134,14 +134,14 @@ def estimate_expression(x, shapeMU, expPC, expEV, shape, s, R, t2d, lamb = 2000)
     A = s*P.dot(R)
 
     # --- calc pc
-    pc_3d = np.resize(expPC.T, [dof, n, 3]) 
+    pc_3d = np.reshape(expPC.T, [dof, n, 3]) 
     pc_3d = np.reshape(pc_3d, [dof*n, 3]) 
     pc_2d = pc_3d.dot(A.T) 
     pc = np.reshape(pc_2d, [dof, -1]).T # 2n x 29
 
     # --- calc b
     # shapeMU
-    mu_3d = np.resize(shapeMU, [n, 3]).T # 3 x n
+    mu_3d = np.reshape(shapeMU, [n, 3]).T # 3 x n
     # expression
     shape_3d = shape
     # 
