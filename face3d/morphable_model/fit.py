@@ -266,6 +266,9 @@ def fit_points_for_show(x, X_ind, model, n_sp, n_ep, max_iter = 4):
         expression = np.reshape(expression, [int(len(expression)/3), 3]).T
         sp = estimate_shape(x, shapeMU, shapePC, model['shapeEV'][:n_sp,:], expression, s, R, t[:2], lamb = 40)
 
+    # final result
+    lsp.append(sp); lep.append(ep); ls.append(s), lR.append(R), lt.append(t)
+
     # print('ls', ls)
     # print('lR', lR)
     return np.array(lsp), np.array(lep), np.array(ls), np.array(lR), np.array(lt)
